@@ -11,6 +11,15 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    lombokVersion = '1.18.16'
+}
+
+dependencies {
+    implementation "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+}
+
 wrapper {
     gradleVersion '6.3'
 }
