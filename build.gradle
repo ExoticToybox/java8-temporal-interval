@@ -28,3 +28,7 @@ dependencies {
 wrapper {
     gradleVersion '6.3'
 }
+
+sourceCompatibility = 11
+targetCompatibility = 11
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
