@@ -6,11 +6,48 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class LocalDateIntervalTest {
     private final LocalDate originFrom = LocalDate.now();
     private final LocalDate originTo = originFrom.plusDays(30L);
     private final LocalDateInterval origin = new LocalDateInterval(originFrom, originTo);
+
+    @Nested
+    class Constructor {
+        /**
+         * <pre>
+         * from < to
+         * </pre>
+         */
+        @Test
+        public void test_constructor_fromIsBeforeTo() {
+            assertThatNoException().isThrownBy(() -> new LocalDateInterval(originFrom, originTo));
+        }
+
+        /**
+         * <pre>
+         * from = to
+         * </pre>
+         */
+        @Test
+        public void test_constructor_fromIsEqualTo() {
+            assertThatThrownBy(() -> new LocalDateInterval(originFrom, originFrom))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        /**
+         * <pre>
+         * from > to
+         * </pre>
+         */
+        @Test
+        public void test_constructor_fromIsAfterTo() {
+            assertThatThrownBy(() -> new LocalDateInterval(originTo, originFrom))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+    }
 
     @Nested
     class Contains {
