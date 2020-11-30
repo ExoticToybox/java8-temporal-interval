@@ -3,7 +3,6 @@ package com.example.core.temporal;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.time.temporal.Temporal;
 
@@ -19,10 +18,23 @@ import java.time.temporal.Temporal;
  * @param <I> {@link com.example.core.temporal.AbstractTemporalInterval}のサブクラス - the subclass of {@link com.example.core.temporal.AbstractTemporalInterval}
  */
 @Getter(AccessLevel.PROTECTED)
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractTemporalInterval<T extends Temporal, I extends AbstractTemporalInterval<T, I>> {
     @NonNull protected final T from;
     @NonNull protected final T to;
+
+    /**
+     * Constructor
+     *
+     * @param from 開始時点 - the point of start, must be before to, not null
+     * @param to   終了時点 - the point of end, must be after before, not null
+     */
+    protected AbstractTemporalInterval(@NonNull T from, @NonNull T to) {
+        if (toEpoch(from) >= toEpoch(to)) {
+            throw new IllegalArgumentException("from must be before to");
+        }
+        this.from = from;
+        this.to = to;
+    }
 
     /**
      * <p>
